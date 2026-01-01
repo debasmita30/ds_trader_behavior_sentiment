@@ -19,21 +19,21 @@ Can sentiment be used as a regime filter for smarter trading decisions?
 Datasets
 1. Historical Trader Data (Hyperliquid)
 
-211k+ trades
+    211k+ trades
 
-Fields include trade size, PnL, fees, direction, timestamps
+    Fields include trade size, PnL, fees, direction, timestamps
 
-Aggregated to daily metrics for analysis
+    Aggregated to daily metrics for analysis
 
 2. Bitcoin Fear & Greed Index
 
-Daily sentiment scores
+    Daily sentiment scores
 
-Collapsed into two regimes:
+    Collapsed into two regimes:
 
-Fear (Fear + Extreme Fear)
+    Fear (Fear + Extreme Fear)
 
-Greed (Greed + Extreme Greed)
+    Greed (Greed + Extreme Greed)
 
 Methodology
 
