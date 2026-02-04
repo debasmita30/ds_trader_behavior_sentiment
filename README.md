@@ -27,6 +27,7 @@ Date	      Classification
 YYYY-MM-DD	Fear / Greed
 
 Methodology
+
 A. Data Preparation
 
 Cleaning
