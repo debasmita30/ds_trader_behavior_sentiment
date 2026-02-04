@@ -114,3 +114,62 @@ Metrics evaluated:
 
 ### Repository Structure
 
+ds_debasmita_chatterjee/
+│
+├── notebook_1.ipynb
+├── historical_data.csv
+├── fear_greed_index.csv
+│
+├── csv_files/
+│ └── final_daily_dataset.csv
+│
+├── outputs/
+│ ├── pnl_by_sentiment.png
+│ └── trade_size_by_sentiment.png
+│
+└── ds_report.pdf
+
+
+---
+
+### How to Reproduce
+
+- Open notebook_1.ipynb in Google Colab
+- Upload:
+  - historical_data.csv
+  - fear_greed_index.csv
+- Run all cells (no additional setup required)
+
+---
+
+### Tools Used
+
+- Python
+- Pandas
+- NumPy
+- Matplotlib
+- SciPy
+
+---
+
+### Scope Notes
+
+**This project focuses on**
+
+- Behavioral pattern extraction
+- Regime-based performance differences
+
+**Not covered**
+
+- Price prediction
+- High-frequency or intraday modeling
+
+---
+
+### Author
+
+Debasmita Chatterjee  
+B.Tech Final Year | Data Science & Analytics
+
+
+
