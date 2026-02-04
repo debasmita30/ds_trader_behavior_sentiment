@@ -1,4 +1,4 @@
-##Trader Behavior vs Market Sentiment Analysis
+## Trader Behavior vs Market Sentiment Analysis
 Objective
 
 Quantify how market sentiment regimes (Fear vs Greed) influence trader performance, risk exposure, and behavior using historical execution data. The goal is to extract actionable trading rules driven by behavioral patterns rather than price prediction.
