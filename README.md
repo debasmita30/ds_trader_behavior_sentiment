@@ -1,129 +1,173 @@
-## Trader Behavior vs Market Sentiment Analysis
-Overview
+##Trader Behavior vs Market Sentiment Analysis
+Objective
 
-This project analyzes how trader performance and risk behavior change across market sentiment regimes using real trading data from Hyperliquid and the Bitcoin Fear & Greed Index.
-The goal is to uncover actionable behavioral signals that can inform sentiment-aware trading strategies in crypto markets.
-
-Problem Statement
-
-Market sentiment often drives crowd behavior in crypto trading, but its impact on actual trader profitability and risk-taking is less clear.
-
-This analysis answers:
-
-Do traders perform better during Fear or Greed regimes?
-
-How does risk exposure (trade size, participation, conviction) change with sentiment?
-
-Can sentiment be used as a regime filter for smarter trading decisions?
+Quantify how market sentiment regimes (Fear vs Greed) influence trader performance, risk exposure, and behavior using historical execution data. The goal is to extract actionable trading rules driven by behavioral patterns rather than price prediction.
 
 Datasets
-1. Historical Trader Data (Hyperliquid)
+1. Trader Execution Data (Hyperliquid)
 
-    211k+ trades
+Trade-level records (~211K rows)
 
-    Fields include trade size, PnL, fees, direction, timestamps
+Key fields used
 
-    Aggregated to daily metrics for analysis
+account
+
+symbol
+
+execution_price
+
+size
+
+side
+
+time
+
+closedPnL
+
+leverage
 
 2. Bitcoin Fear & Greed Index
 
-    Daily sentiment scores
+Daily market sentiment classification
 
-    Collapsed into two regimes:
-
-    Fear (Fear + Extreme Fear)
-
-    Greed (Greed + Extreme Greed)
-
+Date	Classification
+YYYY-MM-DD	Fear / Greed
 Methodology
+A. Data Preparation
 
-Data Cleaning & Normalization
+Cleaning
 
-Timestamp standardization
+Removed invalid or zero-size trades
 
-Removal of invalid trades
+Standardized timestamps → UTC → daily granularity
 
-Daily aggregation
+Dropped duplicate rows
 
-Feature Engineering (Daily Level)
+Aggregation (Daily Level per Account)
 
-Total trades
-
-Total & average PnL
-
-Win rate
-
-Average trade size (risk proxy)
-
-Long/short conviction ratio
+Metric	Definition
+Daily PnL	Sum of closedPnL
+Win Rate	% of profitable trades
+Avg Trade Size	Mean absolute position size
+Trade Count	Number of executions
+Long/Short Ratio	Long volume / Short volume
+Avg Leverage	Mean leverage used
 
 Sentiment Alignment
 
+Converted sentiment to binary regimes:
+
+Fear = Fear + Extreme Fear
+
+Greed = Greed + Extreme Greed
+
 Inner join on date
 
-Neutral/unclassified days excluded
+Neutral days excluded
 
-Statistical Validation
+B. Statistical Analysis
 
-Mann–Whitney U tests (non-normal distributions)
+Because trading metrics are non-normal:
 
-Distribution-level comparison between Fear and Greed
+Mann–Whitney U test used for regime comparison
+
+Distribution-level analysis instead of mean-only comparison
+
+Evaluated differences in:
+
+Daily PnL
+
+Win rate
+
+Trade frequency
+
+Position size
+
+Leverage usage
 
 Key Findings
 
-Fear regimes outperform Greed in both daily PnL and trading activity.
+Performance Regime Effect
 
-Traders exhibit higher conviction and participation during Fear, consistent with contrarian behavior.
+Median daily PnL significantly higher during Fear days.
 
-Greed regimes show reduced activity and weaker performance, likely due to crowding risk.
+Win rate distribution shifts positively under Fear.
 
-Risk exposure during Fear is selective, not reckless—higher returns without disproportionate trade size inflation.
+Behavioral Shift
 
-Actionable Insights
+Traders increase participation (trade count ↑) during Fear.
 
-Contrarian Opportunity: Favor selective long exposure during Fear regimes.
+Position sizing increases moderately, not proportionally to PnL → indicates selective conviction, not reckless risk.
 
-Risk Management: Reduce exposure during Greed to avoid crowded trades.
+Greed Regime Characteristics
 
-Regime-Aware Sizing: Use sentiment as a gating signal for position sizing and trade frequency.
+Lower activity
 
-Strategy Design: Incorporate sentiment regimes into systematic trading rules.
+Reduced profitability dispersion
 
+Evidence of crowded positioning and weaker edge
+
+Actionable Strategy Implications
+Regime	Behavioral Signal	Strategy Rule
+Fear	Higher conviction + better edge	Allow higher trade frequency for proven traders
+Fear	Controlled size increase	Moderate leverage expansion acceptable
+Greed	Lower edge + crowding	Reduce leverage and trade frequency
+Greed	Lower dispersion	Favor mean-reversion / smaller targets
 Repository Structure
 ds_debasmita_chatterjee/
-├── notebook_1.ipynb        # Full reproducible analysis (Google Colab)
-├── historical_data.csv     # Input: Hyperliquid trades
-├── fear_greed_index.csv    # Input: Market sentiment
+│
+├── notebook_1.ipynb              # Full analysis pipeline
+├── historical_data.csv           # Trader dataset
+├── fear_greed_index.csv          # Sentiment dataset
+│
 ├── csv_files/
-│   └── final_daily_dataset.csv
+│   └── final_daily_dataset.csv   # Engineered dataset
+│
 ├── outputs/
 │   ├── pnl_by_sentiment.png
 │   └── trade_size_by_sentiment.png
-└── ds_report.pdf           # Final summarized insights
+│
+└── ds_report.pdf                 # 1-page summary
 
-How to Run
+How to Reproduce
 
 Open notebook_1.ipynb in Google Colab
 
-Upload the two input CSV files
+Upload:
 
-Run cells top to bottom — no additional setup required
+historical_data.csv
 
-Tools & Libraries
+fear_greed_index.csv
+
+Run all cells (no external dependencies)
+
+Tools Used
 
 Python
 
 Pandas
 
+NumPy
+
 Matplotlib
 
 SciPy
 
-Google Colab
+Scope Notes
 
-Notes
+This project focuses on:
 
-This project focuses on behavioral signal extraction, not predictive modeling.
-Future extensions could include per-account performance analysis, leverage dynamics, and intraday sentiment signals.
+Behavioral pattern extraction
 
-Author: Debasmita Chatterjee
+Regime-based performance differences
+
+Not covered:
+
+Price prediction
+
+High-frequency or intraday modeling
+
+Author
+
+Debasmita Chatterjee
+B.Tech Final Year | Data Science & Analytics
