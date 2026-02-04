@@ -2,174 +2,99 @@
 
 ### Objective
 
-Quantify how market sentiment regimes (**Fear vs Greed**) influence trader performance, risk exposure, and behavior using historical execution data. The goal is to extract actionable trading rules driven by behavioral patterns rather than price prediction.
+Analyze how **market sentiment regimes (Fear vs Greed)** influence **trader-level performance and behavior** using historical execution data. Focus is on behavioral signal extraction, not price prediction.
 
 ---
 
-### Datasets
+### Dataset
 
-#### 1. Trader Execution Data (Hyperliquid)
+**Trader Execution Data (Hyperliquid)**  
+~211K trades  
 
-Trade-level records (~211K rows)
+Key fields used:
 
-**Key fields used**
+- account  
+- execution_price  
+- size_usd  
+- side  
+- timestamp  
+- closed_pnl  
+- fee  
 
-- account
-- symbol
-- execution_price
-- size
-- side
-- time
-- closedPnL
-- leverage
+**Bitcoin Fear & Greed Index**
 
-#### 2. Bitcoin Fear & Greed Index
-
-Daily market sentiment classification
-
-| Date | Classification |
-|------|----------------|
-| YYYY-MM-DD | Fear / Greed |
+- Daily sentiment classification  
 
 ---
 
 ### Methodology
 
-#### A. Data Preparation
+**Data Preparation**
 
-**Cleaning**
+- Removed invalid trades (zero size/price)  
+- Converted timestamps and aggregated at trader–day level  
+- Filtered low-activity days  
+- Capped extreme PnL outliers (1–99 percentile)  
 
-- Removed invalid or zero-size trades
-- Standardized timestamps to UTC and aggregated to daily level
-- Dropped duplicate rows
+**Feature Engineering**
 
-**Aggregation (Daily Level per Account)**
-
-| Metric | Definition |
-|--------|-----------|
-| Daily PnL | Sum of closedPnL |
-| Win Rate | Percentage of profitable trades |
-| Avg Trade Size | Mean absolute position size |
-| Trade Count | Number of executions |
-| Long/Short Ratio | Long volume divided by short volume |
-| Avg Leverage | Mean leverage used |
+- Daily PnL per trader  
+- Win rate  
+- Median trade size  
+- Trade count  
+- Long/short ratio  
 
 **Sentiment Alignment**
 
-- Converted sentiment into binary regimes
-  - Fear = Fear + Extreme Fear
-  - Greed = Greed + Extreme Greed
-- Performed inner join on date
-- Excluded neutral or missing sentiment days
+- Mapped Extreme Fear → Fear  
+- Mapped Extreme Greed → Greed  
+- Inner join on date  
+
+**Statistical Approach**
+
+- Mann–Whitney U test (non-parametric distributions)  
+- Distribution comparison rather than mean-only  
 
 ---
 
-#### B. Statistical Analysis
+### Key Insights
 
-Because trading metrics are non-normal:
-
-- Mann–Whitney U test used for regime comparison
-- Distribution-level analysis instead of mean-only comparison
-
-Metrics evaluated:
-
-- Daily PnL
-- Win rate
-- Trade frequency
-- Position size
-- Leverage usage
+- Fear regimes show higher trade accuracy (win rate ↑)  
+- Performance edge in Fear comes from quality, not higher activity  
+- High-activity traders display stronger regime sensitivity  
+- Greed regimes show weaker edge and more dispersion compression  
 
 ---
 
-### Key Findings
-
-#### Performance Regime Effect
-
-- Median daily PnL significantly higher during Fear days
-- Win rate distribution shifts positively under Fear
-
-#### Behavioral Shift
-
-- Traders increase participation (trade count increases) during Fear
-- Position sizing increases moderately, not proportional to PnL, indicating selective conviction rather than reckless risk
-
-#### Greed Regime Characteristics
-
-- Lower trading activity
-- Reduced profitability dispersion
-- Evidence of crowded positioning and weaker edge
-
----
-
-### Actionable Strategy Implications
+### Strategy Implications
 
 | Regime | Behavioral Signal | Strategy Rule |
-|--------|-------------------|---------------|
-| Fear | Higher conviction and better edge | Allow higher trade frequency for proven traders |
-| Fear | Controlled size increase | Moderate leverage expansion acceptable |
-| Greed | Lower edge and crowding | Reduce leverage and trade frequency |
-| Greed | Lower dispersion | Favor mean-reversion and smaller targets |
+|--------|------------------|---------------|
+| Fear | Higher accuracy | Allow higher participation for proven traders |
+| Fear | Selective conviction | Moderate leverage expansion acceptable |
+| Greed | Reduced edge | Lower leverage and trade frequency |
+| Greed | Compressed dispersion | Favor smaller targets / mean reversion |
 
 ---
 
-### Repository Structure
+### Reproducibility
 
-ds_debasmita_chatterjee/
-│
-├── notebook_1.ipynb
-├── historical_data.csv
-├── fear_greed_index.csv
-│
-├── csv_files/
-│ └── final_daily_dataset.csv
-│
-├── outputs/
-│ ├── pnl_by_sentiment.png
-│ └── trade_size_by_sentiment.png
-│
-└── ds_report.pdf
-
+Open **Trader_Behavior_vs_Market_Sentiment_Analysis.ipynb** in Google Colab and run all cells.
 
 ---
 
-### How to Reproduce
+### Tools
 
-- Open notebook_1.ipynb in Google Colab
-- Upload:
-  - historical_data.csv
-  - fear_greed_index.csv
-- Run all cells (no additional setup required)
-
----
-
-### Tools Used
-
-- Python
-- Pandas
-- NumPy
-- Matplotlib
-- SciPy
-
----
-
-### Scope Notes
-
-**This project focuses on**
-
-- Behavioral pattern extraction
-- Regime-based performance differences
-
-**Not covered**
-
-- Price prediction
-- High-frequency or intraday modeling
+- Python  
+- Pandas  
+- NumPy  
+- Matplotlib  
+- SciPy  
+- Seaborn  
 
 ---
 
 ### Author
 
 Debasmita Chatterjee  
-B.Tech Final Year | Data Science & Analytics
-
-
-
+Data Science & Analytics
