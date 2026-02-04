@@ -59,9 +59,10 @@ Key fields used:
 
 ### Key Insights
 
-- Fear regimes show higher trade accuracy (win rate ↑)  
-- Performance edge in Fear comes from quality, not higher activity  
-- High-activity traders display stronger regime sensitivity  
+- Fear regimes show **higher trade accuracy (win rate ↑)**  
+- Differences in PnL between regimes are **directional but not statistically significant**  
+- Behavioral edge in Fear arises from **trade quality rather than increased activity**  
+- High-activity traders display stronger sentiment sensitivity  
 - Greed regimes show weaker edge and more dispersion compression  
 
 ---
